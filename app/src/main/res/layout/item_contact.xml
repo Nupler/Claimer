@@ -1,0 +1,44 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    <TextView
+        android:id="@+id/lNaam"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+    <TextView
+        android:id="@+id/lNummer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nummer"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/lNaam"
+        android:layout_toEndOf="@+id/lNaam" />
+    <TextView
+        android:id="@+id/lId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="id"
+        android:layout_below="@+id/lNaam"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+    <TextView
+        android:id="@+id/lSchuld"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Schuld"
+        android:layout_toRightOf="@+id/lNummer"
+        android:layout_toEndOf="@+id/lNummer" />
+    <TextView
+        android:id="@+id/lDatum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Datum"
+        android:layout_below="@+id/lNaam"
+        android:layout_toRightOf="@+id/lId"
+        android:layout_toEndOf="@+id/lId" />
+
+</RelativeLayout>

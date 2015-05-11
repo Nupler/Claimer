@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">My Application</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="textTitel">Schuldenapp</string>
+    <string name="textBedrag">Bedrag</string>
+    <string name="textZoeken">Browse Contacts</string>
+    <string name="textAdd">Add</string>
+</resources>
