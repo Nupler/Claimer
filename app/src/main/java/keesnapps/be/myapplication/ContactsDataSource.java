@@ -57,6 +57,15 @@ public class ContactsDataSource {
                 + " = " + id, null);
     }
 
+    public void updateContact(Contact contact){
+        long id = contact.getId();
+        ContentValues values = new ContentValues();
+        values.put(MySQLiteHelper.COLUMN_SCHULD,contact.getSchuld());
+        values.put(MySQLiteHelper.COLUMN_NUMMER,contact.getNummer());
+        values.put(MySQLiteHelper.COLUMN_NAAM,contact.getNaam());
+        database.update(MySQLiteHelper.TABLE_SCHULDEN,values,MySQLiteHelper.COLUMN_ID+ " = " + id, null);
+    };
+
     public List<Contact> getAllContacts() {
         List<Contact> contacten = new ArrayList<Contact>();
 

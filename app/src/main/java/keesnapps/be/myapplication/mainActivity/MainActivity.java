@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -65,6 +64,7 @@ public class MainActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view,
                                     int position, long id) {
+
                 showOurDialog(parent,view,position,id);
             }
 
@@ -77,16 +77,25 @@ public class MainActivity extends Activity {
     }
 
     private void showOurDialog(AdapterView<?> parent, final View view,
-                          int position, long id){
+                          final int position, long id){
         final Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.oncontactclick);
-        dialog.setTitle("Title...");
+        dialog.setContentView(R.layout.click_contact_dialog);
+        dialog.setTitle("");
 
-        Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonEdit);
+        Button editButton = (Button) dialog.findViewById(R.id.dialogButtonEdit);
+        Button removeButton = (Button) dialog.findViewById(R.id.dialogButtonDelete);
         // if button is clicked, close the custom dialog
-        dialogButton.setOnClickListener(new View.OnClickListener() {
+        editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                editContact(list,view,position);
+                dialog.dismiss();
+            }
+        });
+        removeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                removeContact(list, view, position);
                 dialog.dismiss();
             }
         });
@@ -94,24 +103,61 @@ public class MainActivity extends Activity {
         dialog.show();
     }
 
-    private boolean editContact() {
-        Toast.makeText(this, "edit contact method", Toast.LENGTH_LONG).show();
-        return true;
+    private void showEditDialog(final Contact contact, final View view, final int position){
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.edit_contact_dialog);
+        dialog.setTitle("make changes to edit contact");
+        final EditText editNaam = (EditText) dialog.findViewById(R.id.edit_naam);
+        editNaam.setText(contact.getNaam());
+        final EditText editSchuld = (EditText) dialog.findViewById(R.id.edit_bedrag);
+        editSchuld.setText(contact.getSchuld());
+        final EditText editNummer = (EditText) dialog.findViewById(R.id.edit_nummer);
+        editNummer.setText(contact.getNummer());
+        Button buttonOk = (Button) dialog.findViewById(R.id.buttonOk);
+        // if button is clicked, close the custom dialog
+        buttonOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                contact.setNummer(editNummer.getText().toString());
+                contact.setNaam(editNaam.getText().toString());
+                contact.setSchuld(editSchuld.getText().toString());
+                datasource.updateContact(contact);
+                adapter.notifyDataSetChanged();
+
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
+
+
+    private void editContact(ListView l, View v, int position) {
+        CustomContactsAdapter adapter = (CustomContactsAdapter) list.getAdapter();
+        Contact contact  = adapter.getItem(position);
+        showEditDialog(contact,v,position);
+        datasource.updateContact(contact);
+        adapter.notifyDataSetChanged();
+    }
+    public void removeContact(ListView l, View v, int position) {
+        CustomContactsAdapter adapter = (CustomContactsAdapter) list.getAdapter();
+        Contact contact;
+        contact = adapter.getItem(position);
+        datasource.deleteContact(contact);
+        adapter.remove(contact);
+    }
+
 
     private void initGui() {
         ArrayList<Contact> arrayOfContacts = new ArrayList<Contact>(datasource.getAllContacts());
 // Create the adapter to convert the array to views
-        CustomContactsAdapter adapter = new CustomContactsAdapter(this, arrayOfContacts);
+        adapter = new CustomContactsAdapter(this, arrayOfContacts);
 // Attach the adapter to a ListView
-
         list.setAdapter(adapter);
         adapter.notifyDataSetChanged();
-
     }
 
     public void addAction(View view) {
-        adapter = (CustomContactsAdapter) list.getAdapter();
+
         Contact contact = null;
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
@@ -125,22 +171,6 @@ public class MainActivity extends Activity {
         adapter.notifyDataSetChanged();
         resetParams();
     }
-
-
-    public void deleteAction(ListView l, View v, int position, long id) {
-        CustomContactsAdapter adapter = (CustomContactsAdapter) list.getAdapter();
-        Contact contact;
-        contact = adapter.getItem(position);
-        datasource.deleteContact(contact);
-        adapter.remove(contact);
-    }
-
-
-    public void editAction(View view) {
-
-
-    }
-
 
     public void zoekAction(View view) {
         Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
