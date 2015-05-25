@@ -17,6 +17,7 @@ public class Contact {
     }
 
     public Contact(){
+        //iets
     }
 
     public String getNummer() {
