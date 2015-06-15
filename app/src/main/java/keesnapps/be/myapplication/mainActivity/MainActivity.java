@@ -14,12 +14,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
-
 import keesnapps.be.myapplication.Contact;
 import keesnapps.be.myapplication.ContactsDataSource;
 import keesnapps.be.myapplication.CustomContactsAdapter;
@@ -35,7 +36,8 @@ public class MainActivity extends Activity {
     TextView nummer;
     TextView toonNaam;
     EditText bedrag;
-
+    SimpleDateFormat dateFormat = new SimpleDateFormat(
+            "yyyy-MM-dd HH:mm:ss");
     ListView list;
     CustomContactsAdapter adapter;
     static final int PICK_CONTACT = 1;
@@ -123,7 +125,6 @@ public class MainActivity extends Activity {
                 contact.setSchuld(editSchuld.getText().toString());
                 datasource.updateContact(contact);
                 adapter.notifyDataSetChanged();
-
                 dialog.dismiss();
             }
         });
@@ -149,6 +150,23 @@ public class MainActivity extends Activity {
 
     private void initGui() {
         ArrayList<Contact> arrayOfContacts = new ArrayList<Contact>(datasource.getAllContacts());
+        Date date = new Date();
+        Date now = new Date();
+        for(Contact c: arrayOfContacts){
+            try {
+                date =  dateFormat.parse(c.getDatum());
+                date.setMinutes(date.getMinutes()+10);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            System.out.println((date.compareTo(now)>=0 )? "juist": "fout") ;
+
+
+
+            _datum = new String(dateFormat.format(date));
+
+        }
 // Create the adapter to convert the array to views
         adapter = new CustomContactsAdapter(this, arrayOfContacts);
 // Attach the adapter to a ListView

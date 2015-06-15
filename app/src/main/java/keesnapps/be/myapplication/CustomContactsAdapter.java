@@ -31,7 +31,7 @@ public class CustomContactsAdapter extends ArrayAdapter<Contact> {
         // Populate the data into the template view using the data object
         lNaam.setText(contact.getNaam());
         lNummer.setText(contact.getNummer());
-//        lId.setText(contact.getId());
+        lId.setText(contact.getId()+" ");
         lSchuld.setText(contact.getSchuld());
         lDatum.setText(contact.getDatum());
 
