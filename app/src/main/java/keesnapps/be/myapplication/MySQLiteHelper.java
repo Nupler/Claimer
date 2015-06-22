@@ -7,6 +7,7 @@ import android.util.Log;
 
 public class MySQLiteHelper extends SQLiteOpenHelper {
 
+    //variables
     public static final String TABLE_SCHULDEN = "schulden";
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_NAAM = "naam";
